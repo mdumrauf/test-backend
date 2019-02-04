@@ -8,5 +8,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Matias Dumrauf (@mdumrauf)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "1.18.3",
+    "dotenv": "6.2.0",
+    "express": "4.16.4",
+    "mongoose": "5.4.9",
+    "winston": "3.2.1"
+  }
 }
