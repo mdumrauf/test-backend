@@ -6,6 +6,7 @@ const usersRouter = require('./user');
 const articlesRouter = require('./article');
 
 
+router.use('/articles', articlesRouter);
 router.use('/users', usersRouter);
 
 
