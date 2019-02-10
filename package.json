@@ -9,6 +9,9 @@
   },
   "author": "Matias Dumrauf (@mdumrauf)",
   "license": "MIT",
+  "engines": {
+    "node": "10.9"
+  },
   "dependencies": {
     "body-parser": "1.18.3",
     "dotenv": "6.2.0",
