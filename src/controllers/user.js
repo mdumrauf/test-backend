@@ -8,6 +8,9 @@ class UserController {
             const user = await UserService.create(req.body);
             res.status(201).send(user);
         } catch (e) {
+            if (e.name === 'ValidationError') {
+                res.status(400).send(e.message);
+            }
             next(e);
         }
     }

@@ -27,6 +27,15 @@ describe('Users controller', () => {
                 .expect(201, done);
         });
 
+        it('responds 400 when name is not specified', (done) => {
+            request(app)
+                .post('/api/users')
+                .send({
+                    "avatar": "http://foo.bar/image.png"
+                })
+                .expect(400, done);
+        });
+
     });
 
 });
