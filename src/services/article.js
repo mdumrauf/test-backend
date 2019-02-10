@@ -1,5 +1,6 @@
 
 const {ObjectId} = require('mongoose').Types;
+const {isEmpty} = require('lodash');
 
 const Article = require('../models/article');
 
@@ -17,8 +18,12 @@ class ArticleService {
         return Article.findOneAndUpdate({_id: ObjectId(id)}, article, {new: true, lean: true});
     }
 
-    static async findAll() {
-        return Article.find().lean().exec();
+    static async findAll(tags) {
+        const query = Article.find();
+        if (!isEmpty(tags)) {
+            query.in('tags', tags);
+        }
+        return query.lean().exec();
     }
 
     static async findById(id) {

@@ -1,4 +1,5 @@
 
+const {compact, split} = require('lodash');
 const ArticleService = require('../services/article');
 
 class ArticleController {
@@ -32,7 +33,8 @@ class ArticleController {
 
     static async findAll(req, res, next) {
         try {
-            const articles = await ArticleService.findAll();
+            const tags = compact(split(req.query.tags));
+            const articles = await ArticleService.findAll(tags);
             res.send(articles);
         } catch (e) {
             next(e);
