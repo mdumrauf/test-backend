@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "mocha": "5.2.0",
+    "mongodb-memory-server": "3.0.0",
     "should": "13.2.3",
     "sinon": "7.2.3",
     "supertest": "3.4.2"
