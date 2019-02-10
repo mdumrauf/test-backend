@@ -9,6 +9,9 @@ class ArticleController {
             const article = await ArticleService.create(req.body);
             res.status(201).send(article);
         } catch (e) {
+            if (e.name === 'ValidationError') {
+                res.status(400).send(e.message);
+            }
             next(e);
         }
     }
