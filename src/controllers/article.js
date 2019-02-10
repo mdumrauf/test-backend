@@ -44,7 +44,11 @@ class ArticleController {
     static async findById(req, res, next) {
         try {
             const article = await ArticleService.findById(req.params.id);
-            res.send(article);
+            if (article !== null) {
+                res.send(article);
+            } else {
+                res.status(404).send();
+            }
         } catch (e) {
             next(e);
         }
