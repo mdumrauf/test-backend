@@ -2,6 +2,7 @@
 const app = require('../');
 const request = require('supertest');
 const sinon = require('sinon');
+require('should');
 
 const MongooseHelper = require('../helpers/mongoose')
 
@@ -27,7 +28,6 @@ describe('Articles controller', () => {
                     "title": "A wonderful title",
                     "text": "A very short text.",
                     "tags": ["test", "foo", "bar", "baz"]
-
                 })
                 .expect(400, done);
         });
@@ -62,6 +62,20 @@ describe('Articles controller', () => {
             request(app)
                 .get('/api/articles/someRandomId')
                 .expect(404, done);
+        });
+
+    });
+
+    context('GET /api/articles', () => {
+
+        it('responds 200 with empty array when there are no articles', (done) => {
+            request(app)
+                .get('/api/articles')
+                .expect(200)
+                .then(response => {
+                    response.body.should.be.empty();
+                })
+                .then(done);
         });
 
     });
