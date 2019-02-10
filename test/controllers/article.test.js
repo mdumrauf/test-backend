@@ -32,6 +32,17 @@ describe('Articles controller', () => {
                 .expect(400, done);
         });
 
+        it('responds 400 when title is not specified', (done) => {
+            request(app)
+                .post('/api/articles')
+                .send({
+                    "text": "A very short text.",
+                    "tags": ["test", "foo", "bar", "baz"],
+                    "user": "5c5de02dd2c29712d4aa2fdd"
+                })
+                .expect(400, done);
+        });
+
     });
 
     context('GET /api/articles/:id', () => {
