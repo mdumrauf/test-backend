@@ -1,5 +1,15 @@
 # test-backend
 
+## Build and run
+
+This project requires node.js 10.15 (latest LTS to date).
+
+1. `npm install`
+2. Configure env variables, either globally or using the .env template
+3. `npm start`
+
+To run the tests: `npm test`.
+
 ## API docs
 
 ### Authentication
