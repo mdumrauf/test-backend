@@ -2,6 +2,8 @@
 const app = require('../');
 const request = require('supertest');
 const sinon = require('sinon');
+const {omit} = require('lodash');
+
 require('should');
 
 const MongooseHelper = require('../helpers/mongoose')
@@ -10,6 +12,12 @@ const ArticleService = require('../../src/services/article');
 
 
 describe('Articles controller', () => {
+    const newArticle = {
+        "title": "A wonderful title",
+        "text": "A very short text.",
+        "tags": ["test", "foo", "bar", "baz"],
+        "user": "5c5de02dd2c29712d4aa2fdd"
+    };
     let mongoose;
 
     before(async() => {
@@ -24,25 +32,25 @@ describe('Articles controller', () => {
         it('responds 400 when user is not specified', (done) => {
             request(app)
                 .post('/api/articles')
-                .send({
-                    "title": "A wonderful title",
-                    "text": "A very short text.",
-                    "tags": ["test", "foo", "bar", "baz"]
-                })
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`)
+                .send(omit(newArticle, ['user']))
                 .expect(400, done);
         });
 
         it('responds 400 when title is not specified', (done) => {
             request(app)
                 .post('/api/articles')
-                .send({
-                    "text": "A very short text.",
-                    "tags": ["test", "foo", "bar", "baz"],
-                    "user": "5c5de02dd2c29712d4aa2fdd"
-                })
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`)
+                .send(omit(newArticle, ['title']))
                 .expect(400, done);
         });
 
+        it('responds 401 when no Auth token specified', (done) => {
+            request(app)
+                .post('/api/articles')
+                .send(newArticle)
+                .expect(401, done);
+        });
     });
 
     context('GET /api/articles/:id', () => {
@@ -61,9 +69,15 @@ describe('Articles controller', () => {
 
             request(app)
                 .get('/api/articles/someRandomId')
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`)
                 .expect(404, done);
         });
 
+        it('responds 401 when no Auth token specified', (done) => {
+            request(app)
+                .get('/api/articles/someRandomId')
+                .expect(401, done);
+        });
     });
 
     context('GET /api/articles', () => {
@@ -71,6 +85,7 @@ describe('Articles controller', () => {
         it('responds 200 with empty array when there are no articles', (done) => {
             request(app)
                 .get('/api/articles')
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`)
                 .expect(200)
                 .then(response => {
                     response.body.should.be.empty();
@@ -78,6 +93,11 @@ describe('Articles controller', () => {
                 .then(done);
         });
 
+        it('responds 401 when no Auth token specified', (done) => {
+            request(app)
+                .get('/api/articles')
+                .expect(401, done);
+        });
     });
 
 });

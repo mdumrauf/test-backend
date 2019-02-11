@@ -1,7 +1,9 @@
 
+const authenticateMiddleware = require('./middlewares/authenticate');
+
 class Routes {
     static configure(app) {
-        app.use('/api', require('./api'));
+        app.use('/api', authenticateMiddleware(), require('./api'));
     }
 }
 

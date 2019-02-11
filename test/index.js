@@ -2,6 +2,9 @@ const express = require('express');
 
 const app = express();
 
+require('dotenv').config({path: '.env.test'});
+
+
 const Config = require(`../src/helpers/config`);
 const Router = require('../src/routes');
 
