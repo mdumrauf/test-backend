@@ -20,14 +20,31 @@ describe('Articles controller', () => {
     };
     let mongoose;
 
-    before(async() => {
+    beforeEach(async() => {
         mongoose = await MongooseHelper.configure();
     });
-    after(() => {
+    afterEach(() => {
         mongoose.connection.close();
     });
 
     context('POST /api/articles/', () => {
+
+        it('responds 201 when a valid article is created', (done) => {
+            request(app)
+                .post('/api/articles')
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`)
+                .send(newArticle)
+                .expect(201)
+                .then(response => {
+                    const articleCreated = response.body;
+                    articleCreated.should.have.properties('_id', 'createdAt', 'updatedAt');
+                    articleCreated.title.should.be.eql(newArticle.title);
+                    articleCreated.text.should.be.eql(newArticle.text);
+                    articleCreated.user.should.be.eql(newArticle.user);
+                    articleCreated.tags.should.be.eql(newArticle.tags);
+                    done();
+                });
+        });
 
         it('responds 400 when user is not specified', (done) => {
             request(app)
