@@ -6,7 +6,7 @@
   "scripts": {
     "eslint": "eslint ./",
     "start": "node --use_strict index.js",
-    "test": "./node_modules/.bin/mocha test/**/*.js --timeout 60000"
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha test/**/*.js --timeout 60000"
   },
   "author": "Matias Dumrauf (@mdumrauf)",
   "license": "MIT",
