@@ -16,6 +16,25 @@ describe('Articles controller', () => {
         'tags': ['test', 'foo', 'bar', 'baz'],
         'user': '5c5de02dd2c29712d4aa2fdd'
     };
+    const article1 = {
+        'title': 'A wonderful title',
+        'text': 'A very short text.',
+        'user': '5c5de02dd2c29712d4aa2fdd',
+        'tags': ['test', 'foo', 'bar', 'baz']
+    };
+    const article2 = {
+        'title': 'Another title',
+        'text': 'Some text.',
+        'user': '5c5de02dd2c29712d4aa2fdd',
+        'tags': ['bar', 'baz']
+    };
+    const article3 = {
+        'title': 'Yet one more title',
+        'text': 'Has some text too.',
+        'user': '5c5de02dd2c29712d4aa2fdd',
+        'tags': ['qux']
+    };
+
     let mongoose;
 
     beforeEach(async() => {
@@ -95,27 +114,38 @@ describe('Articles controller', () => {
         });
     });
 
+
+    context('PATCH /api/articles/:id', () => {
+        it('responds 404 when it does not exist', async() => {
+            const {statusCode} = await request(app)
+                .patch('/api/articles/someRandomId')
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`)
+                .send({'name': 'Some title'});
+
+            statusCode.should.be.eql(404);
+        });
+    });
+
+
+    context('DELETE /api/articles/:id', () => {
+        it('responds 204 when it successfully deletes an article', async() => {
+            const newArt1 = await ArticleService.create(article1);
+            const {statusCode} = await request(app)
+                .delete(`/api/articles/${newArt1._id}`)
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`);
+
+            statusCode.should.be.eql(204);
+        });
+        it('responds 404 when it does not exist', async() => {
+            const {statusCode} = await request(app)
+                .delete('/api/articles/someRandomId')
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`);
+
+            statusCode.should.be.eql(404);
+        });
+    });
+
     context('GET /api/articles', () => {
-
-        const article1 = {
-            'title': 'A wonderful title',
-            'text': 'A very short text.',
-            'user': '5c5de02dd2c29712d4aa2fdd',
-            'tags': ['test', 'foo', 'bar', 'baz']
-        };
-        const article2 = {
-            'title': 'Another title',
-            'text': 'Some text.',
-            'user': '5c5de02dd2c29712d4aa2fdd',
-            'tags': ['bar', 'baz']
-        };
-        const article3 = {
-            'title': 'Yet one more title',
-            'text': 'Has some text too.',
-            'user': '5c5de02dd2c29712d4aa2fdd',
-            'tags': ['qux']
-        };
-
         it('responds 200 with empty array when there are no articles', async() => {
             const {body, statusCode} = await request(app)
                 .get('/api/articles')

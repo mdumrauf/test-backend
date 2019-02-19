@@ -18,8 +18,8 @@ class ArticleController {
 
     static async delete(req, res, next) {
         try {
-            await ArticleService.deleteById(req.params.id);
-            res.status(204).send();
+            const article = await ArticleService.deleteById(req.params.id);
+            res.status(article !== null ? 204 : 404).send();
         } catch (e) {
             next(e);
         }
@@ -28,6 +28,10 @@ class ArticleController {
     static async patch(req, res, next) {
         try {
             const newArticle = await ArticleService.modifyById(req.params.id, req.body);
+            if (newArticle === null) {
+                res.status(404).send();
+                return;
+            }
             res.send(newArticle);
         } catch (e) {
             next(e);

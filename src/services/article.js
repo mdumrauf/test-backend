@@ -11,7 +11,7 @@ class ArticleService {
     }
 
     static async deleteById(id) {
-        return Article.deleteOne({_id: ObjectId(id)});
+        return Article.findOneAndDelete({_id: ObjectId(id)});
     }
 
     static async modifyById(id, article) {
