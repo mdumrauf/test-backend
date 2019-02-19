@@ -4,6 +4,7 @@
   "description": "Test backend that exposes a Rest API",
   "main": "index.js",
   "scripts": {
+    "eslint": "eslint ./",
     "start": "node --use_strict index.js",
     "test": "./node_modules/.bin/mocha test/**/*.js --timeout 60000"
   },
@@ -22,6 +23,9 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
+    "eslint": "5.14.1",
+    "eslint-plugin-lodash": "5.1.0",
+    "eslint-plugin-promise": "4.0.1",
     "mocha": "5.2.0",
     "mongodb-memory-server": "3.0.0",
     "should": "13.2.3",
