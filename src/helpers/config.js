@@ -1,11 +1,14 @@
 
 const env = process.env.NODE_ENV;
 
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+
 class Config {
     static configure(app) {
-        app.use(require('body-parser').json());
+        app.use(bodyParser.json());
         if (env !== 'test') {
-            app.use(require('morgan')(env && env === 'prod' && 'combined' || 'dev'));
+            app.use(morgan(env && env === 'prod' && 'combined' || 'dev'));
         }
     }
 }
