@@ -97,12 +97,46 @@ describe('Articles controller', () => {
 
     context('GET /api/articles', () => {
 
+        const article1 = {
+            'title': 'A wonderful title',
+            'text': 'A very short text.',
+            'user': '5c5de02dd2c29712d4aa2fdd',
+            'tags': ['test', 'foo', 'bar', 'baz']
+        };
+        const article2 = {
+            'title': 'Another title',
+            'text': 'Some text.',
+            'user': '5c5de02dd2c29712d4aa2fdd',
+            'tags': ['bar', 'baz']
+        };
+        const article3 = {
+            'title': 'Yet one more title',
+            'text': 'Has some text too.',
+            'user': '5c5de02dd2c29712d4aa2fdd',
+            'tags': ['qux']
+        };
+
         it('responds 200 with empty array when there are no articles', async() => {
             const {body, statusCode} = await request(app)
                 .get('/api/articles')
                 .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`);
             statusCode.should.be.eql(200);
             body.should.be.empty();
+        });
+
+        it('responds 200 with an array with 2 elements when tags are specified', async() => {
+            const newArt1 = await ArticleService.create(article1);
+            const newArt2 = await ArticleService.create(article2);
+            await ArticleService.create(article3);
+
+            const {body, statusCode} = await request(app)
+                .get('/api/articles?tags=foo,bar,baz')
+                .set('Authorization', `Bearer ${process.env.AUTH_SECRET}`);
+            statusCode.should.be.eql(200);
+
+            body.should.have.lengthOf(2);
+            body[0]._id.should.be.eql(newArt1.id);
+            body[1]._id.should.be.eql(newArt2.id);
         });
 
         it('responds 401 when no Auth token specified', async() => {

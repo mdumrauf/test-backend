@@ -36,7 +36,7 @@ class ArticleController {
 
     static async findAll(req, res, next) {
         try {
-            const tags = compact(split(req.query.tags));
+            const tags = compact(split(req.query.tags, ","));
             const articles = await ArticleService.findAll(tags);
             res.send(articles);
         } catch (e) {
