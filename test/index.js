@@ -4,8 +4,9 @@ const app = express();
 
 require('dotenv').config({path: '.env.test'});
 
+require('should');
 
-const Config = require(`../src/helpers/config`);
+const Config = require('../src/helpers/config');
 const Router = require('../src/routes');
 
 Config.configure(app);
