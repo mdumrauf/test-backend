@@ -1,6 +1,6 @@
 {
   "name": "test-backend",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Test backend that exposes a Rest API",
   "main": "index.js",
   "scripts": {
