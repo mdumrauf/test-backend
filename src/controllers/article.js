@@ -1,10 +1,14 @@
 
-const {compact, split} = require('lodash');
+const crudController = require('./crud');
 const ArticleService = require('../services/article');
 
-class ArticleController {
+class ArticleController extends crudController {
 
-    static async create(req, res, next) {
+    constructor() {
+        super(ArticleService);
+    }
+
+    async create(req, res, next) {
         try {
             const article = await ArticleService.create(req.body);
             res.status(201).send(article);
@@ -16,7 +20,7 @@ class ArticleController {
         }
     }
 
-    static async delete(req, res, next) {
+    async delete(req, res, next) {
         try {
             const article = await ArticleService.deleteById(req.params.id);
             res.status(article !== null ? 204 : 404).send();
@@ -25,7 +29,7 @@ class ArticleController {
         }
     }
 
-    static async patch(req, res, next) {
+    async patch(req, res, next) {
         try {
             const newArticle = await ArticleService.modifyById(req.params.id, req.body);
             if (newArticle === null) {
@@ -38,7 +42,7 @@ class ArticleController {
         }
     }
 
-    static async findAll(req, res, next) {
+    async findAll(req, res, next) {
         try {
             const tags = compact(split(req.query.tags, ","));
             const articles = await ArticleService.findAll(tags);
@@ -48,7 +52,7 @@ class ArticleController {
         }
     }
 
-    static async findById(req, res, next) {
+    async findById(req, res, next) {
         try {
             const article = await ArticleService.findById(req.params.id);
             if (article !== null) {

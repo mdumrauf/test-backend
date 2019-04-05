@@ -1,25 +1,29 @@
 
+const crudService = require('./crud');
 const {ObjectId} = require('mongoose').Types;
 const {isEmpty} = require('lodash');
 
 const Article = require('../models/article');
 
-class ArticleService {
+class ArticleService extends crudService{
+    constructor() {
+        super(Article);
+    }
 
     static async create(article) {
-        return Article.create(article);
+        return this._model.create(article);
     }
 
     static async deleteById(id) {
-        return Article.findOneAndDelete({_id: ObjectId(id)});
+        return this._model.findOneAndDelete({_id: ObjectId(id)});
     }
 
     static async modifyById(id, article) {
-        return Article.findOneAndUpdate({_id: ObjectId(id)}, article, {new: true, lean: true});
+        return this._model.findOneAndUpdate({_id: ObjectId(id)}, article, {new: true, lean: true});
     }
 
     static async findAll(tags) {
-        const query = Article.find();
+        const query = this._model.find();
         if (!isEmpty(tags)) {
             query.in('tags', tags);
         }
@@ -27,7 +31,7 @@ class ArticleService {
     }
 
     static async findById(id) {
-        return Article.findOne({_id: ObjectId(id)});
+        return this._model.findOne({_id: ObjectId(id)});
     }
 
 }

@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose');
-const logger = require('../services/logger');
+const logger = require('./logger');
 
 class Mongoose {
     static async configure() {

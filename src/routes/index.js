@@ -1,5 +1,5 @@
 
-const authenticateMiddleware = require('./middlewares/authenticate');
+const authenticateMiddleware = require('./middleware/authenticate');
 
 class Routes {
     static configure(app) {
