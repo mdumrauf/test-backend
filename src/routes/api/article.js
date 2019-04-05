@@ -1,15 +1,16 @@
+const Controller = require('../../controllers/article');
 
-const express = require('express');
-const router = express.Router();
+const termKeys = ['title', 'text', 'tags'];
 
-const ArticleController = require('../../controllers/article');
+module.exports = router => {
+    const controller = new Controller();
 
-
-router.get('/', ArticleController.findAll.bind(ArticleController));
-router.get('/:id', ArticleController.findById.bind(ArticleController));
-router.post('/', ArticleController.create.bind(ArticleController));
-router.patch('/:id', ArticleController.patch.bind(ArticleController));
-router.delete('/:id', ArticleController.delete.bind(ArticleController));
-
-
-module.exports = router;
+    router.get('/', (req, res, next) => controller.fetch(req, res, next));
+    router.get('/:id', (req, res, next) => controller.fetchOneByParams(req, res, next));
+    router.post('/', (req, res, next) => controller.saveOne(req, res, next));
+    router.patch('/:id', (req, res, next) => controller.saveOne(req, res, next));
+    router.delete('/:id', (req, res, next) => controller.deleteOne(req, res, next));
+    router.get('/find', (req, res, next) => controller.findByTerm(req, res, next, termKeys));
+    
+    return router;
+};
